@@ -1,11 +1,11 @@
 ---
-title: "Mijn *website* :sunglasses:"
+title: "Mijn website"
 author: 'thoblo'
 date: '2k20'
 output: 
-  flexdashboard::flex_dashboard:
-    orientation: columns
-    vertical_layout: fill
+    flexdashboard::flex_dashboard:
+        storyboard: true
+        theme: flatly
 ---
 
 ```{r setup, include=FALSE}
@@ -13,19 +13,40 @@ library(flexdashboard)
 library(emo)
 ```
 
-Column {data-width=650}
------------------------------------------------------------------------
+### Chart A`r emo::ji("sunglasses")`
 
-### Chart A
+Hallo **wereld**, welkom op mijn *website*. `r emo::ji("sunglasses")` `r emo::ji("ok_hand")` `r emo::ji("100")`
 
-```{r}
 
-```
 
-Column {data-width=350}
------------------------------------------------------------------------
+
+_________
+
+* Hallo
+  * 1...
+  * 2...
+  * 3...
+* **Wereld!!!!** `r emo::ji("fire")`
+
+1. Welkom
+   1. op
+   1. mijn
+1. *website*
+
+***
+> Ik wens u een *prettige* dag. `r emo::ji("revolving_hearts")`
 
 ### Chart B
+
+![Plaatje](Rplot.png)
+
+___________
+Deze tabel bevat belangrijke informatie
+
+Hallo  | **wereld**
+-------|------------
+Welkom | op
+mijn   | *website*
 
 ```{r}
 

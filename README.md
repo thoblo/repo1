@@ -7,6 +7,6 @@ Hallo **wereld**, welkom op mijn *website*. :sunglasses: :ok_hand: :100:
 * **Wereld**
 
 1. Welkom
-  1. op
-  1. mijn
+   1. op
+   1. mijn
 1. *Website*

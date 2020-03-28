@@ -1,5 +1,7 @@
 ---
-title: "Untitled"
+title: "Mijn *website* :sunglasses:"
+author: 'thoblo'
+date: '2k20'
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns

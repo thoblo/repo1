@@ -137,8 +137,9 @@ lines(x = playlistYears, y = playlistAveragesValenceList, type="l", col="black")
 legend(1965, 1.02, legend=c("Energy", "Danceability","Speechiness", "Acousticness", "Liveness", "Valence"),
        col=c("blue", "pink", "green", "red", "purple", "black"), lty=1, cex=0.8)
 
-qplot(x = playlistYears, y = playlistAveragesEnergyList, geom = c("point", "smooth"), ylim = c(0.3,0.8))
+alalala = qplot(x = playlistYears, y = playlistAveragesEnergyList, geom = c("point", "smooth"), ylim = c(0.3,0.8))
 
+ggplotly(alalala)
 
 top_100_over_alle_jaren <- get_playlist_audio_features('2egTVPEeUtPDDBgfK9NiHB', '2egTVPEeUtPDDBgfK9NiHB')
 

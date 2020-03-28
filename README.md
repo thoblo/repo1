@@ -13,3 +13,9 @@ Hallo **wereld**, welkom op mijn *website*. :sunglasses: :ok_hand: :100:
 
 > Het ga u
 > *goed* :revolving_hearts:
+
+
+- [x] @mentions, #refs, [links](), **formatting**, and <del>tags</del> supported
+- [x] list syntax required (any unordered or ordered list supported)
+- [x] this is a complete item
+- [ ] this is an incomplete item

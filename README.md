@@ -1,2 +1,2 @@
-# Mijn :sunglasses:*website*:sunglasses:
-Hallo **wereld**, welkom op mijn :sunglasses:*website*:sunglasses:. :ok_hand:
+# :sunglasses: Mijn *website* :sunglasses:
+### Hallo **wereld**, welkom op mijn *website*. :sunglasses: :ok_hand:

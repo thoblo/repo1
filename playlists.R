@@ -98,6 +98,15 @@ for(playlist in top_100_per_jaar_lijst) {
 
 # Datasets van zes koren combineren
 
+Alle_koren_met_koornaam <-
+  Firma_Vocaal %>% mutate(Koor = "Firma Vocaal") %>%
+  bind_rows(Popolo %>% mutate(Koor = "Popolo")) %>%
+  bind_rows(studentenpopkoor_tillburg %>% mutate(Koor = "Studentenkoort Tilburg")) %>%
+  bind_rows(Vocal_Essen %>% mutate(Koor = "Vocal Esssen")) %>% 
+  bind_rows(Plica %>% mutate(Koor = "Plica")) %>%
+  bind_rows(UCK_Utrecht %>% mutate(Koor = "UCK Utrecht"))
+
+
 #1 = Firma Vocaal, 2 = Popolo, 3 = Studentenkoort Tilburg, 4 = Vocal Essen, 5 = Plica, 6 = UCK Utrecht
 
 Alle_koren <-

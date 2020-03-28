@@ -15,6 +15,7 @@ library(heatmaply)
 library(protoclust)
 library(spotifyr)
 library(compmus)
+library(emo)
 source('spotify.R')
 source('playlists.R')
 ```
@@ -138,8 +139,148 @@ Alle_koren_valence_plot
 
 ______
 Koor 1 = Firma Vocaal
+
 Koor 2 = Popolo
+
 Koor 3 = Studentenkoort Tilburg
+
 Koor 4 = Vocal Essen
+
 Koor 5 = Plica
+
 Koor 6 = UCK Utrecht
+
+### Chart D
+
+
+```{r}
+ScatterEnergyValence <-
+  Alle_koren_met_koornaam %>%
+  ggplot(                      # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = loudness,
+      colour = Koor,
+      label = track.name   # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +               # Scatter plot.
+  geom_rug(size = 0.1) +       # Add 'fringes' to show data distribution.
+  scale_x_continuous(          # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),  # Use grid-lines for quadrants only.
+    minor_breaks = NULL      # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(          # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_brewer(         # Use the Color Brewer to choose a palette.
+    type = "qual",           # Qualitative set.
+    palette = "Set2"       # Name of the palette is 'Set2'.
+  ) +
+  scale_size_continuous(       # Fine-tune the sizes of each point.
+    trans = "exp",           # Use an exp transformation to emphasise loud.
+    guide = "none"           # Remove the legend for size.
+  ) +
+  theme_light() +              # Use a simpler them.
+  labs(                        # Make the titles nice.
+    x = "Valence",
+    y = "Energy",
+    colour = "Koor"
+  )
+
+ScatterDanceabilityAcousticness <-
+  Alle_koren_met_koornaam %>%
+  ggplot(                      # Set up the plot.
+    aes(
+      x = acousticness,
+      y = danceability,
+      size = loudness,
+      colour = Koor,
+      label = track.name   # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +               # Scatter plot.
+  geom_rug(size = 0.1) +       # Add 'fringes' to show data distribution.
+  scale_x_continuous(          # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),  # Use grid-lines for quadrants only.
+    minor_breaks = NULL      # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(          # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_brewer(         # Use the Color Brewer to choose a palette.
+    type = "qual",           # Qualitative set.
+    palette = "Set2"       # Name of the palette is 'Set2'.
+  ) +
+  scale_size_continuous(       # Fine-tune the sizes of each point.
+    trans = "exp",           # Use an exp transformation to emphasise loud.
+    guide = "none"           # Remove the legend for size.
+  ) +
+  theme_light() +              # Use a simpler them.
+  labs(                        # Make the titles nice.
+    x = "Acousticness",
+    y = "Danceability",
+    colour = "Koor"
+  )
+
+ScatterSpeechinessLiveness <-
+  Alle_koren_met_koornaam %>%
+  ggplot(                      # Set up the plot.
+    aes(
+      x = liveness,
+      y = speechiness,
+      size = loudness,
+      colour = Koor,
+      label = track.name   # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +               # Scatter plot.
+  geom_rug(size = 0.1) +       # Add 'fringes' to show data distribution.
+  scale_x_continuous(          # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),  # Use grid-lines for quadrants only.
+    minor_breaks = NULL      # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(          # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_brewer(         # Use the Color Brewer to choose a palette.
+    type = "qual",           # Qualitative set.
+    palette = "Set2"       # Name of the palette is 'Set2'.
+  ) +
+  scale_size_continuous(       # Fine-tune the sizes of each point.
+    trans = "exp",           # Use an exp transformation to emphasise loud.
+    guide = "none"           # Remove the legend for size.
+  ) +
+  theme_light() +              # Use a simpler them.
+  labs(                        # Make the titles nice.
+    x = "Liveness",
+    y = "Speechiness",
+    colour = "Koor"
+  )
+
+
+#ggplotly(ScatterEnergyValence)
+#ggplotly(ScatterDanceabilityAcousticness)
+#ggplotly(ScatterSpeechinessLiveness)
+ScatterEnergyValence
+ScatterDanceabilityAcousticness
+ScatterSpeechinessLiveness
+```
+
+
+_____________
+
+Deze drie scatterplots laten zien hoe de energy en valence, de danceability en acousticness en de speechiness en liveness zich tot elkaar verhouden voor de nummbers in het repertoir van de zes koren. Door te klikken op de naam van een koor in de legenda van een van de scatterplots worden deze punten weggelaten, door dubbel te klikken worden de punten van de vijf andere koren weggelaten.
+
+In de laatste grafiek is het misschien handiger om te herschalen zodat liveness en speechiness van 0 tot 0.5 lopen. We missen dan alleen drie nummers in de grafiek.
+

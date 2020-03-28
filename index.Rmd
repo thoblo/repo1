@@ -44,7 +44,18 @@ _________
 
 ### Chart B
 
-![Plaatje](Rplot.png)
+
+```{r}
+plot(x = jaartallen_lijst, y = Gemiddelde_energy_per_jaar_lijst, type="l", col="blue",ylim = c(0,1), xlab = "Jaartal", ylab = "Waarde")
+lines(x = jaartallen_lijst, y = Gemiddelde_danceability_per_jaar_lijst, type="l", col="pink")
+lines(x = jaartallen_lijst, y = Gemiddelde_speechiness_per_jaar_lijst, type="l", col="green")
+lines(x = jaartallen_lijst, y = Gemiddelde_acousticness_per_jaar_lijst, type="l", col="red")
+lines(x = jaartallen_lijst, y = Gemiddelde_liveness_per_jaar_lijst, type="l", col="purple")
+lines(x = jaartallen_lijst, y = Gemiddelde_valence_per_jaar_lijst, type="l", col="black")
+legend(1965, 1.02, legend=c("Energy", "Danceability","Speechiness", "Acousticness", "Liveness", "Valence"),
+       col=c("blue", "pink", "green", "red", "purple", "black"), lty=1, cex=0.5)
+
+```
 
 ___________
 Deze tabel bevat belangrijke informatie
@@ -58,14 +69,77 @@ mijn   | *website*
 ### Chart C
 
 ```{r}
+#Gemiddelde energy, valence etc van Top 100 alle jaren
+Top100EnergyAlleJarenGemiddeld <- mean(top_100_over_alle_jaren$energy, na.rm = TRUE)
+Top100DanceabilityAlleJarenGemiddeld <- mean(top_100_over_alle_jaren$danceability, na.rm = TRUE)
+Top100SpeechinessAlleJarenGemiddeld <- mean(top_100_over_alle_jaren$speechiness, na.rm = TRUE)
+Top100AcousticnessAlleJarenGemiddeld <- mean(top_100_over_alle_jaren$acousticness, na.rm = TRUE)
+Top100LivenessAlleJarenGemiddeld <- mean(top_100_over_alle_jaren$liveness, na.rm = TRUE)
+Top100ValenceAlleJarenGemiddeld <- mean(top_100_over_alle_jaren$valence, na.rm = TRUE)
+
+#Boxplots van energy, valence etc van alle koren
 Alle_koren_energy_plot <-
   Alle_koren %>%
-  ggplot(aes(x = playlist, y = energy)) +
+  ggplot(aes(x = Koor, y = energy)) +
   geom_boxplot() +
   xlab("Koren") +
   ylab("Energy") +
-  geom_hline(yintercept=mean(top_100_over_alle_jaren$energy, na.rm = TRUE), linetype="dashed")
+  geom_hline(yintercept=Top100EnergyAlleJarenGemiddeld, linetype="dashed")
 
+Alle_koren_danceability_plot <-
+  Alle_koren %>%
+  ggplot(aes(x = Koor, y = danceability)) +
+  geom_boxplot() +
+  xlab("Koren") +
+  ylab("Danceability") +
+  geom_hline(yintercept=Top100DanceabilityAlleJarenGemiddeld, linetype="dashed")
+
+Alle_koren_speechiness_plot <-
+  Alle_koren %>%
+  ggplot(aes(x = Koor, y = speechiness)) +
+  geom_boxplot() +
+  xlab("Koren") +
+  ylab("Speechiness") +
+  geom_hline(yintercept=Top100SpeechinessAlleJarenGemiddeld, linetype="dashed")
+
+Alle_koren_acousticness_plot <-
+  Alle_koren %>%
+  ggplot(aes(x = Koor, y = acousticness)) +
+  geom_boxplot() +
+  xlab("Koren") +
+  ylab("Acousticness") +
+  geom_hline(yintercept=Top100AcousticnessAlleJarenGemiddeld, linetype="dashed")
+
+Alle_koren_liveness_plot <-
+  Alle_koren %>%
+  ggplot(aes(x = Koor, y = liveness)) +
+  geom_boxplot() +
+  xlab("Koren") +
+  ylab("Liveness") +
+  geom_hline(yintercept=Top100LivenessAlleJarenGemiddeld, linetype="dashed")
+
+Alle_koren_valence_plot <-
+  Alle_koren %>%
+  ggplot(aes(x = Koor, y = valence)) +
+  geom_boxplot() +
+  xlab("Koren") +
+  ylab("Valence") +
+  geom_hline(yintercept=Top100ValenceAlleJarenGemiddeld, linetype="dashed")
+
+
+#Weergeven van plots
 Alle_koren_energy_plot
+Alle_koren_danceability_plot
+Alle_koren_speechiness_plot
+Alle_koren_acousticness_plot
+Alle_koren_liveness_plot
+Alle_koren_valence_plot
 ```
 
+______
+Koor 1 = Firma Vocaal
+Koor 2 = Popolo
+Koor 3 = Studentenkoort Tilburg
+Koor 4 = Vocal Essen
+Koor 5 = Plica
+Koor 6 = UCK Utrecht

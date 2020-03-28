@@ -63,21 +63,54 @@ top_100_over_1966 <- get_playlist_audio_features('nederlandse_top_40', '1NySUOZC
 top_100_over_1965 <- get_playlist_audio_features('nederlandse_top_40', '0McePZOD9X80f9KieKR50c')
 top_100_over_alle_jaren <- get_playlist_audio_features('2egTVPEeUtPDDBgfK9NiHB', '2egTVPEeUtPDDBgfK9NiHB')
 
+
 # Lijst van alle Top100 playlists 1965-2019
-playlists_allemaal <- list(top_100_over_1965, top_100_over_1966, top_100_over_1967, top_100_over_1968, top_100_over_1969, top_100_over_1970, top_100_over_1971, top_100_over_1972, top_100_over_1973, top_100_over_1974, top_100_over_1975, top_100_over_1976, top_100_over_1977, top_100_over_1978, top_100_over_1979, top_100_over_1980, top_100_over_1981, top_100_over_1982, top_100_over_1983, top_100_over_1984, top_100_over_1985, top_100_over_1986, top_100_over_1987, top_100_over_1988, top_100_over_1989, top_100_over_1990, top_100_over_1991, top_100_over_1992, top_100_over_1993, top_100_over_1994, top_100_over_1995, top_100_over_1996, top_100_over_1997, top_100_over_1998, top_100_over_1999, top_100_over_2000, top_100_over_2001, top_100_over_2002, top_100_over_2003, top_100_over_2004, top_100_over_2005, top_100_over_2006, top_100_over_2007, top_100_over_2008, top_100_over_2009, top_100_over_2010, top_100_over_2011, top_100_over_2012, top_100_over_2013, top_100_over_2014, top_100_over_2015, top_100_over_2016, top_100_over_2017, top_100_over_2018, top_100_over_2019)
+
+top_100_per_jaar_lijst <- list(top_100_over_1965, top_100_over_1966, top_100_over_1967, top_100_over_1968, top_100_over_1969, top_100_over_1970, top_100_over_1971, top_100_over_1972, top_100_over_1973, top_100_over_1974, top_100_over_1975, top_100_over_1976, top_100_over_1977, top_100_over_1978, top_100_over_1979, top_100_over_1980, top_100_over_1981, top_100_over_1982, top_100_over_1983, top_100_over_1984, top_100_over_1985, top_100_over_1986, top_100_over_1987, top_100_over_1988, top_100_over_1989, top_100_over_1990, top_100_over_1991, top_100_over_1992, top_100_over_1993, top_100_over_1994, top_100_over_1995, top_100_over_1996, top_100_over_1997, top_100_over_1998, top_100_over_1999, top_100_over_2000, top_100_over_2001, top_100_over_2002, top_100_over_2003, top_100_over_2004, top_100_over_2005, top_100_over_2006, top_100_over_2007, top_100_over_2008, top_100_over_2009, top_100_over_2010, top_100_over_2011, top_100_over_2012, top_100_over_2013, top_100_over_2014, top_100_over_2015, top_100_over_2016, top_100_over_2017, top_100_over_2018, top_100_over_2019)
+jaartallen_lijst <- 1965:2019
+
+
+# Lijst van gemiddeldes energy, valence etc voor elk jaar
+
+Gemiddelde_energy_per_jaar_lijst <- c()
+Gemiddelde_danceability_per_jaar_lijst <- c()
+Gemiddelde_speechiness_per_jaar_lijst <- c()
+Gemiddelde_acousticness_per_jaar_lijst <- c()
+Gemiddelde_liveness_per_jaar_lijst <- c()
+Gemiddelde_valence_per_jaar_lijst <- c()
+
+for(playlist in top_100_per_jaar_lijst) {
+  playlist_Energy_average <- mean(playlist$energy, na.rm = TRUE)
+  playlist_Danceability_average <- mean(playlist$danceability, na.rm = TRUE)
+  playlist_Speechiness_average <- mean(playlist$speechiness, na.rm = TRUE)
+  playlist_Acousticness_average <- mean(playlist$acousticness, na.rm = TRUE)
+  playlist_Liveness_average <- mean(playlist$liveness, na.rm = TRUE)
+  playlist_Valence_average <- mean(playlist$valence, na.rm = TRUE)
+
+  Gemiddelde_energy_per_jaar_lijst <- c(Gemiddelde_energy_per_jaar_lijst, playlist_Energy_average)
+  Gemiddelde_danceability_per_jaar_lijst <- c(Gemiddelde_danceability_per_jaar_lijst, playlist_Danceability_average)
+  Gemiddelde_speechiness_per_jaar_lijst <- c(Gemiddelde_speechiness_per_jaar_lijst, playlist_Speechiness_average)
+  Gemiddelde_acousticness_per_jaar_lijst <- c(Gemiddelde_acousticness_per_jaar_lijst, playlist_Acousticness_average)
+  Gemiddelde_liveness_per_jaar_lijst <- c(Gemiddelde_liveness_per_jaar_lijst, playlist_Liveness_average)
+  Gemiddelde_valence_per_jaar_lijst <- c(Gemiddelde_valence_per_jaar_lijst, playlist_Valence_average)
+}
 
 
 # Datasets van zes koren combineren
 
+#1 = Firma Vocaal, 2 = Popolo, 3 = Studentenkoort Tilburg, 4 = Vocal Essen, 5 = Plica, 6 = UCK Utrecht
+
 Alle_koren <-
-  Firma_Vocaal %>% mutate(playlist = "Firma Vocaal") %>%
-  bind_rows(Popolo %>% mutate(playlist = "Popolo")) %>%
-  bind_rows(studentenpopkoor_tillburg %>% mutate(playlist = "Studentenpopkoor Tilburg")) %>%
-  bind_rows(Vocal_Essen %>% mutate(playlist = "Vocal Essen")) %>% 
-  bind_rows(Plica %>% mutate(playlist = "Plica")) %>%
-  bind_rows(UCK_Utrecht %>% mutate(playlist = "UCK Utrecht"))
+  Firma_Vocaal %>% mutate(Koor = "1") %>%
+  bind_rows(Popolo %>% mutate(Koor = "2")) %>%
+  bind_rows(studentenpopkoor_tillburg %>% mutate(Koor = "3")) %>%
+  bind_rows(Vocal_Essen %>% mutate(Koor = "4")) %>% 
+  bind_rows(Plica %>% mutate(Koor = "5")) %>%
+  bind_rows(UCK_Utrecht %>% mutate(Koor = "6"))
+
 
 # Datasets van 70s, 80s etc
+
 top_100_60s <- 
   top_100_over_1965 %>% mutate(playlist = "1965") %>%
   bind_rows(top_100_over_1966 %>% mutate(playlist = "1966")) %>%

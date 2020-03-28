@@ -12,3 +12,9 @@ Hallo **wereld**, welkom op mijn *website*. :sunglasses: :ok_hand: :100:
 1. *Website*
 
 > Ik wens u een *prettige* dag. :revolving_hearts:
+
+Deze tabel bevat belangrijke informatie
+
+A | B
+-|-
+hallo|wereld

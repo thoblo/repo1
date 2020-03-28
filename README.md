@@ -21,3 +21,5 @@ hallo|wereld
 
 
 Hallo2
+
+![Plaatje](Rplot.png)

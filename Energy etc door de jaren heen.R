@@ -146,5 +146,6 @@ top_100_over_alle_jaren <- get_playlist_audio_features('2egTVPEeUtPDDBgfK9NiHB',
 AllAvarages = c(mean(top_100_over_alle_jaren$energy, na.rm = TRUE), mean(top_100_over_alle_jaren$danceability, na.rm = TRUE),mean(top_100_over_alle_jaren$speechiness, na.rm = TRUE),mean(top_100_over_alle_jaren$acousticness, na.rm = TRUE),mean(top_100_over_alle_jaren$liveness, na.rm = TRUE),mean(top_100_over_alle_jaren$valence, na.rm = TRUE))
 
 
+
 # Uitdaging voor jou is nu hoe je niet alleen ??n variabele kunt plotten hier (in mijn geval "dist", bij jou bv "energy"), maar ook de andere variabelen ("acousticness" of weetikveelwat)
 # Hint: Met "lines" kun je extra lijnen toevoegen aan de plot die hierboven is gemaakt.

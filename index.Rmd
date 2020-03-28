@@ -9,8 +9,14 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-library(flexdashboard)
-library(emo)
+library(tidyverse)
+library(plotly)
+library(heatmaply)
+library(protoclust)
+library(spotifyr)
+library(compmus)
+source('spotify.R')
+source('playlists.R')
 ```
 
 ### Chart A`r emo::ji("sunglasses")`
@@ -48,13 +54,18 @@ Hallo  | **wereld**
 Welkom | op
 mijn   | *website*
 
-```{r}
-
-```
 
 ### Chart C
 
 ```{r}
+Alle_koren_energy_plot <-
+  Alle_koren %>%
+  ggplot(aes(x = playlist, y = energy)) +
+  geom_boxplot() +
+  xlab("Koren") +
+  ylab("Energy") +
+  geom_hline(yintercept=mean(top_100_over_alle_jaren$energy, na.rm = TRUE), linetype="dashed")
 
+Alle_koren_energy_plot
 ```
 

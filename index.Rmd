@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "thoblo's website"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
@@ -17,7 +17,29 @@ source('spotify.R')
 source('playlists.R')
 ```
 
-### Energy, Valence etc door de jaren heen
+### Gemiddeldes spotify features van koren en Top100
+
+```{r}
+Gemiddeldes_top100_lijst <- c(mean(top_100_over_alle_jaren$energy, na.rm = TRUE), mean(top_100_over_alle_jaren$danceability, na.rm = TRUE), mean(top_100_over_alle_jaren$speechiness, na.rm = TRUE), mean(top_100_over_alle_jaren$acousticness, na.rm = TRUE), mean(top_100_over_alle_jaren$liveness, na.rm = TRUE), mean(top_100_over_alle_jaren$valence, na.rm = TRUE))
+Gemiddeldes_koren_lijst <- c(mean(Alle_koren_liedjes$energy, na.rm=TRUE), mean(Alle_koren_liedjes$danceability, na.rm=TRUE), mean(Alle_koren_liedjes$speechiness, na.rm=TRUE), mean(Alle_koren_liedjes$acousticness, na.rm=TRUE), mean(Alle_koren_liedjes$liveness, na.rm=TRUE), mean(Alle_koren_liedjes$valence, na.rm=TRUE))
+Feature <- c("Energy", "Danceability", "Speechiness", "Acousticness", "Liveness", "Valence")
+Value <- Gemiddeldes_top100_lijst
+Gemiddeldes_top100 <- tibble(Feature, Value) %>% mutate(Type = "Top100")
+Value <- Gemiddeldes_koren_lijst
+Gemiddeldes_koren <- tibble(Feature,Value) %>% mutate(Type = "Koren")
+Gemiddeldes_top100_en_koren <- Gemiddeldes_top100 %>% bind_rows(Gemiddeldes_koren)
+
+ggplot(Gemiddeldes_top100_en_koren, aes(factor(Feature), Value, fill = Type)) + 
+  geom_bar(stat="identity", position = "dodge") + 
+  scale_fill_brewer(palette = "Set1") +
+  labs(                        
+    x = "Feature",
+    y = "Waarde"
+  ) +
+  theme(legend.title=element_blank())
+```
+
+### Spotify features door de jaren heen
 
 ```{r}
 plot(x = jaartallen_lijst, y = Gemiddelde_energy_per_jaar_lijst, type="l", col="blue",ylim = c(0,1), xlab = "Jaartal", ylab = "Waarde")
@@ -30,7 +52,7 @@ legend(1965, 1.02, legend=c("Energy", "Danceability","Speechiness", "Acousticnes
        col=c("blue", "pink", "green", "red", "purple", "black"), lty=1, cex=0.5)
 ```
 
-### Boxplots Energy, Valence etc voor elk koor
+### Boxplots spotify features voor elk koor
 
 ```{r}
 #Gemiddelde energy, valence etc van Top 100 alle jaren
@@ -247,7 +269,7 @@ ScatterSpeechinessLiveness <-
 ggplotly(ScatterSpeechinessLiveness)
 ```
 
-### Dendrogram and Heatmap
+### Dendrogram en Heatmap
 
 ```{r}
 Popolo_Heat <- get_playlist_audio_features('02F2tqTr7CSqHTrMwQRANP', '02F2tqTr7CSqHTrMwQRANP') %>%
@@ -294,7 +316,7 @@ Popolo_Heat_juice <-
   column_to_rownames('track.name')
 
 
-Alle_koren_liedjes <- get_playlist_audio_features('5uA0ByhoDZ2WouF0Oq6Ab4', '5uA0ByhoDZ2WouF0Oq6Ab4') %>%
+Alle_koren_liedjess <- get_playlist_audio_features('5uA0ByhoDZ2WouF0Oq6Ab4', '5uA0ByhoDZ2WouF0Oq6Ab4') %>%
   add_audio_analysis %>%
   mutate(
     segments = 
@@ -331,9 +353,9 @@ Alle_koren_juice <-
            `G#|Ab` + A + `A#|Bb` + B +
            c01 + c02 + c03 + c04 + c05 + c06 +
            c07 + c08 + c09 + c10 + c11 + c12,
-         data = Alle_koren_liedjes) %>% 
+         data = Alle_koren_liedjess) %>% 
   step_range(all_predictors()) %>% 
-  prep(Alle_koren_liedjes %>% mutate(track.name = str_trunc(track.name, 20))) %>% 
+  prep(Alle_koren_liedjess %>% mutate(track.name = str_trunc(track.name, 20))) %>% 
   juice %>% 
   column_to_rownames('track.name')
 
@@ -349,7 +371,7 @@ ggheatmap(
 )
 ```
 
-### Chroma & Timbre features
+### Chroma en Timbre features
 
 ```{r}
 WithinTemptation <- 

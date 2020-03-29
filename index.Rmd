@@ -1,50 +1,23 @@
 ---
-title: "Mijn website"
-author: 'thoblo'
-date: '2k20'
+title: "Untitled"
 output: 
-    flexdashboard::flex_dashboard:
-        storyboard: true
-        theme: flatly
+  flexdashboard::flex_dashboard:
+    storyboard: true
 ---
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(tidymodels)
 library(plotly)
 library(heatmaply)
 library(protoclust)
 library(spotifyr)
 library(compmus)
-library(emo)
 source('spotify.R')
 source('playlists.R')
 ```
 
-### Chart A`r emo::ji("sunglasses")`
-
-Hallo **wereld**, welkom op mijn *website*. `r emo::ji("sunglasses")` `r emo::ji("ok_hand")` `r emo::ji("100")`
-
-
-
-
-_________
-
-* Hallo
-  * 1...
-  * 2...
-  * 3...
-* **Wereld!!!!** `r emo::ji("fire")`
-
-1. Welkom
-   1. op
-   1. mijn
-1. *website*
-
-***
-> Ik wens u een *prettige* dag. `r emo::ji("revolving_hearts")`
-
-### Chart B
-
+### Energy, Valence etc door de jaren heen
 
 ```{r}
 plot(x = jaartallen_lijst, y = Gemiddelde_energy_per_jaar_lijst, type="l", col="blue",ylim = c(0,1), xlab = "Jaartal", ylab = "Waarde")
@@ -55,19 +28,9 @@ lines(x = jaartallen_lijst, y = Gemiddelde_liveness_per_jaar_lijst, type="l", co
 lines(x = jaartallen_lijst, y = Gemiddelde_valence_per_jaar_lijst, type="l", col="black")
 legend(1965, 1.02, legend=c("Energy", "Danceability","Speechiness", "Acousticness", "Liveness", "Valence"),
        col=c("blue", "pink", "green", "red", "purple", "black"), lty=1, cex=0.5)
-
 ```
 
-___________
-Deze tabel bevat belangrijke informatie
-
-Hallo  | **wereld**
--------|------------
-Welkom | op
-mijn   | *website*
-
-
-### Chart C
+### Boxplots Energy, Valence etc voor elk koor
 
 ```{r}
 #Gemiddelde energy, valence etc van Top 100 alle jaren
@@ -150,8 +113,8 @@ Koor 5 = Plica
 
 Koor 6 = UCK Utrecht
 
-### Chart D
 
+### Energy-Valence scatterplot
 
 ```{r}
 ScatterEnergyValence <-
@@ -179,7 +142,8 @@ ScatterEnergyValence <-
   ) +
   scale_colour_brewer(         # Use the Color Brewer to choose a palette.
     type = "qual",           # Qualitative set.
-    palette = "Set2"       # Name of the palette is 'Set2'.
+    palette = "Set2",
+    guide = "none"          # Name of the palette is 'Set2'.
   ) +
   scale_size_continuous(       # Fine-tune the sizes of each point.
     trans = "exp",           # Use an exp transformation to emphasise loud.
@@ -192,6 +156,11 @@ ScatterEnergyValence <-
     colour = "Koor"
   )
 
+ggplotly(ScatterEnergyValence)
+```
+
+### Danceability-Acousticness scatterplot
+```{r}
 ScatterDanceabilityAcousticness <-
   Alle_koren_met_koornaam %>%
   ggplot(                      # Set up the plot.
@@ -217,7 +186,8 @@ ScatterDanceabilityAcousticness <-
   ) +
   scale_colour_brewer(         # Use the Color Brewer to choose a palette.
     type = "qual",           # Qualitative set.
-    palette = "Set2"       # Name of the palette is 'Set2'.
+    palette = "Set2",       # Name of the palette is 'Set2'.
+    guide = 'none'
   ) +
   scale_size_continuous(       # Fine-tune the sizes of each point.
     trans = "exp",           # Use an exp transformation to emphasise loud.
@@ -226,10 +196,14 @@ ScatterDanceabilityAcousticness <-
   theme_light() +              # Use a simpler them.
   labs(                        # Make the titles nice.
     x = "Acousticness",
-    y = "Danceability",
-    colour = "Koor"
+    y = "Danceability"
   )
+ggplotly(ScatterDanceabilityAcousticness)
+```
 
+### Speechiness-Liveness scatterplot
+
+```{r}
 ScatterSpeechinessLiveness <-
   Alle_koren_met_koornaam %>%
   ggplot(                      # Set up the plot.
@@ -255,12 +229,14 @@ ScatterSpeechinessLiveness <-
   ) +
   scale_colour_brewer(         # Use the Color Brewer to choose a palette.
     type = "qual",           # Qualitative set.
-    palette = "Set2"       # Name of the palette is 'Set2'.
+    palette = "Set2",       # Name of the palette is 'Set2'.
+    guide = 'none'
   ) +
   scale_size_continuous(       # Fine-tune the sizes of each point.
     trans = "exp",           # Use an exp transformation to emphasise loud.
     guide = "none"           # Remove the legend for size.
   ) +
+  theme(legend.position='none') +
   theme_light() +              # Use a simpler them.
   labs(                        # Make the titles nice.
     x = "Liveness",
@@ -268,19 +244,178 @@ ScatterSpeechinessLiveness <-
     colour = "Koor"
   )
 
-
-#ggplotly(ScatterEnergyValence)
-#ggplotly(ScatterDanceabilityAcousticness)
-#ggplotly(ScatterSpeechinessLiveness)
-ScatterEnergyValence
-ScatterDanceabilityAcousticness
-ScatterSpeechinessLiveness
+ggplotly(ScatterSpeechinessLiveness)
 ```
 
+### Dendrogram and Heatmap
 
-_____________
+```{r}
+Popolo_Heat <- get_playlist_audio_features('02F2tqTr7CSqHTrMwQRANP', '02F2tqTr7CSqHTrMwQRANP') %>%
+  add_audio_analysis %>%
+  mutate(
+    segments = 
+      map2(segments, key, compmus_c_transpose)) %>% 
+  mutate(
+    pitches = 
+      map(segments, 
+          compmus_summarise, pitches, 
+          method = 'mean', norm = 'manhattan'),
+    timbre =
+      map(
+        segments,
+        compmus_summarise, timbre,
+        method = 'mean')) %>% 
+  mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>% 
+  mutate_at(vars(pitches, timbre), map, bind_rows) %>% 
+  unnest(cols = c(pitches, timbre))
+  
+  
+Popolo_Heat_juice <- 
+  recipe(track.name ~
+           danceability +
+           energy +
+           loudness +
+           speechiness +
+           acousticness +
+           instrumentalness +
+           liveness +
+           valence +
+           tempo +
+           duration +
+           C + `C#|Db` + D + `D#|Eb` +
+           E + `F` + `F#|Gb` + G +
+           `G#|Ab` + A + `A#|Bb` + B +
+           c01 + c02 + c03 + c04 + c05 + c06 +
+           c07 + c08 + c09 + c10 + c11 + c12,
+         data = Popolo_Heat) %>% 
+  step_range(all_predictors()) %>% 
+  prep(Popolo_Heat %>% mutate(track.name = str_trunc(track.name, 20))) %>% 
+  juice %>% 
+  column_to_rownames('track.name')
 
-Deze drie scatterplots laten zien hoe de energy en valence, de danceability en acousticness en de speechiness en liveness zich tot elkaar verhouden voor de nummbers in het repertoir van de zes koren. Door te klikken op de naam van een koor in de legenda van een van de scatterplots worden deze punten weggelaten, door dubbel te klikken worden de punten van de vijf andere koren weggelaten.
 
-In de laatste grafiek is het misschien handiger om te herschalen zodat liveness en speechiness van 0 tot 0.5 lopen. We missen dan alleen drie nummers in de grafiek.
+Alle_koren_liedjes <- get_playlist_audio_features('5uA0ByhoDZ2WouF0Oq6Ab4', '5uA0ByhoDZ2WouF0Oq6Ab4') %>%
+  add_audio_analysis %>%
+  mutate(
+    segments = 
+      map2(segments, key, compmus_c_transpose)) %>% 
+  mutate(
+    pitches = 
+      map(segments, 
+          compmus_summarise, pitches, 
+          method = 'mean', norm = 'manhattan'),
+    timbre =
+      map(
+        segments,
+        compmus_summarise, timbre,
+        method = 'mean')) %>% 
+  mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>% 
+  mutate_at(vars(pitches, timbre), map, bind_rows) %>% 
+  unnest(cols = c(pitches, timbre))
+  
+  
+Alle_koren_juice <- 
+  recipe(track.name ~
+           danceability +
+           energy +
+           loudness +
+           speechiness +
+           acousticness +
+           instrumentalness +
+           liveness +
+           valence +
+           tempo +
+           duration +
+           C + `C#|Db` + D + `D#|Eb` +
+           E + `F` + `F#|Gb` + G +
+           `G#|Ab` + A + `A#|Bb` + B +
+           c01 + c02 + c03 + c04 + c05 + c06 +
+           c07 + c08 + c09 + c10 + c11 + c12,
+         data = Alle_koren_liedjes) %>% 
+  step_range(all_predictors()) %>% 
+  prep(Alle_koren_liedjes %>% mutate(track.name = str_trunc(track.name, 20))) %>% 
+  juice %>% 
+  column_to_rownames('track.name')
 
+ggheatmap(
+  Popolo_Heat_juice,
+  hclustfun = protoclust,
+  dist_method = 'manhattan'
+)
+ggheatmap(
+  Alle_koren_juice,
+  hclustfun = protoclust,
+  dist_method = 'manhattan'
+)
+```
+
+### Chroma & Timbre features
+
+```{r}
+WithinTemptation <- 
+  get_tidy_audio_analysis('66wcihY2Y8ZSqux6EivMWa') %>% 
+  compmus_align(bars, segments) %>% 
+  select(bars) %>% unnest(bars) %>% 
+  mutate(
+    pitches = 
+      map(segments, 
+          compmus_summarise, pitches, 
+          method = 'acentre', norm = 'manhattan')) %>% 
+  mutate(
+    timbre = 
+      map(segments, 
+          compmus_summarise, timbre, 
+          method = 'mean'))
+WithinTemptationplot <- 
+  bind_rows(
+    WithinTemptation %>% compmus_self_similarity(pitches, 'aitchison') %>% mutate(d = d / max(d), type = "Chroma - Within Temptation"),
+    WithinTemptation %>% compmus_self_similarity(timbre, 'euclidean') %>% mutate(d = d / max(d), type = "Timbre - Within Temptation")) %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2, 
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d)) + 
+  geom_tile() +
+  coord_fixed() +
+  facet_wrap(~ type) +
+  scale_fill_viridis_c(option = 'E', guide = 'none') +
+  theme_classic() +
+  labs(x = '', y = '')
+
+Evanescence <- 
+  get_tidy_audio_analysis('0COqiPhxzoWICwFCS4eZcp') %>% 
+  compmus_align(bars, segments) %>% 
+  select(bars) %>% unnest(bars) %>% 
+  mutate(
+    pitches = 
+      map(segments, 
+          compmus_summarise, pitches, 
+          method = 'acentre', norm = 'manhattan')) %>% 
+  mutate(
+    timbre = 
+      map(segments, 
+          compmus_summarise, timbre, 
+          method = 'mean'))
+Evanescenceplot <- 
+  bind_rows(
+    Evanescence %>% compmus_self_similarity(pitches, 'aitchison') %>% mutate(d = d / max(d), type = "Chroma - Evanescence"),
+    Evanescence %>% compmus_self_similarity(timbre, 'euclidean') %>% mutate(d = d / max(d), type = "Timbre - Evanescence")) %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2, 
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d)) + 
+  geom_tile() +
+  coord_fixed() +
+  facet_wrap(~ type) +
+  scale_fill_viridis_c(option = 'E', guide = 'none') +
+  theme_classic() +
+  labs(x = '', y = '')
+
+
+subplot(WithinTemptationplot,Evanescenceplot, nrows = 2)
+```

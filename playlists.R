@@ -40,7 +40,7 @@ top_100_over_1989 <- get_playlist_audio_features('nederlandse_top_40', '2rAtbOrr
 top_100_over_1988 <- get_playlist_audio_features('nederlandse_top_40', '0dVVuYLPFeVFdHo0QFVMNm')
 top_100_over_1987 <- get_playlist_audio_features('nederlandse_top_40', '4xeALUdta32II0luJ9wL1e')
 top_100_over_1986 <- get_playlist_audio_features('nederlandse_top_40', '2cFGUwX98vyxCrrsujuC1U')
-top_100_over_1985 <- get_playlist_audio_features('nederlandse_top_40', '6vxhGl2YWHf02X4UpkXi3q')                                               
+top_100_over_1985 <- get_playlist_audio_features('nederlandse_top_40', '6vxhGl2YWHf02X4UpkXi3q')
 top_100_over_1984 <- get_playlist_audio_features('nederlandse_top_40', '6KkYQorBAW5TUK0yY45F4J')
 top_100_over_1983 <- get_playlist_audio_features('nederlandse_top_40', '1ELDe6h3mtZH7DwAdo9YBW')
 top_100_over_1982 <- get_playlist_audio_features('nederlandse_top_40', '2l6dDAqX13GDYADc7t4mF8')
@@ -62,7 +62,7 @@ top_100_over_1967 <- get_playlist_audio_features('nederlandse_top_40', '2lzlKXRK
 top_100_over_1966 <- get_playlist_audio_features('nederlandse_top_40', '1NySUOZCuT0uPVKROgqLD8')
 top_100_over_1965 <- get_playlist_audio_features('nederlandse_top_40', '0McePZOD9X80f9KieKR50c')
 top_100_over_alle_jaren <- get_playlist_audio_features('2egTVPEeUtPDDBgfK9NiHB', '2egTVPEeUtPDDBgfK9NiHB')
-
+Alle_koren_liedjes <- get_playlist_audio_features('5uA0ByhoDZ2WouF0Oq6Ab4', '5uA0ByhoDZ2WouF0Oq6Ab4')
 
 # Lijst van alle Top100 playlists 1965-2019
 
